@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using Nop.Web.Areas.Admin.Models.Polls;
 using Nop.Services.Localization;
+using Nop.Web.Areas.Admin.Models.Polls;
 using Nop.Web.Framework.Validators;
 
 namespace Nop.Web.Areas.Admin.Validators.Polls
@@ -9,7 +9,13 @@ namespace Nop.Web.Areas.Admin.Validators.Polls
     {
         public PollAnswerValidator(ILocalizationService localizationService)
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage(localizationService.GetResource("Admin.ContentManagement.Polls.Answers.Fields.Name.Required"));
+            //specify rule set for the validation
+            RuleSet(NopValidatorDefaults.ValidationRuleSet, () =>
+            {
+                RuleFor(model => model.Name)
+                    .NotEmpty()
+                    .WithMessage(localizationService.GetResource("Admin.ContentManagement.Polls.Answers.Fields.Name.Required"));
+            });
         }
     }
 }

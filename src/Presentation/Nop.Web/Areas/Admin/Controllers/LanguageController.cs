@@ -18,6 +18,7 @@ using Nop.Web.Areas.Admin.Models.Localization;
 using Nop.Web.Framework.Mvc;
 using Nop.Web.Framework.Mvc.Filters;
 using Nop.Web.Framework.Mvc.ModelBinding;
+using Nop.Web.Framework.Validators;
 
 namespace Nop.Web.Areas.Admin.Controllers
 {
@@ -159,7 +160,7 @@ namespace Nop.Web.Areas.Admin.Controllers
 
                 if (!continueEditing)
                     return RedirectToAction("List");
-                
+
                 return RedirectToAction("Edit", new { id = language.Id });
             }
 
@@ -223,7 +224,7 @@ namespace Nop.Web.Areas.Admin.Controllers
 
                 if (!continueEditing)
                     return RedirectToAction("List");
-                
+
                 return RedirectToAction("Edit", new { id = language.Id });
             }
 
@@ -308,7 +309,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public virtual IActionResult ResourceUpdate(LocaleResourceModel model)
+        public virtual IActionResult ResourceUpdate([Validate] LocaleResourceModel model)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageLanguages))
                 return AccessDeniedView();
@@ -339,11 +340,11 @@ namespace Nop.Web.Areas.Admin.Controllers
 
             _localizationService.UpdateLocaleStringResource(resource);
 
-            return new NullJsonResult();            
+            return new NullJsonResult();
         }
 
         [HttpPost]
-        public virtual IActionResult ResourceAdd(int languageId, LocaleResourceModel model)
+        public virtual IActionResult ResourceAdd(int languageId, [Validate] LocaleResourceModel model)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageLanguages))
                 return AccessDeniedView();
@@ -440,7 +441,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 else
                 {
                     _notificationService.ErrorNotification(_localizationService.GetResource("Admin.Common.UploadFile"));
-                    return RedirectToAction("Edit", new {id = language.Id});
+                    return RedirectToAction("Edit", new { id = language.Id });
                 }
 
                 _notificationService.SuccessNotification(_localizationService.GetResource("Admin.Configuration.Languages.Imported"));
